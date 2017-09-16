@@ -1,79 +1,69 @@
 import java.io.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.DateFormatter;
+import javax.swing.table.DefaultTableModel;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class main_window extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static JTextField name,surname,fathername,dateofbirth,dateofvisit,phone,mail;
 	static JButton ok,close,viewlist;
 	
-	
-
 public  main_window() throws FileNotFoundException, IOException, ParseException{
 	// making frame
-	
 	JSONParser parser = new JSONParser();
 	Object object = parser.parse(new FileReader("d:\\test.json"));
-	JSONArray list = (JSONArray) object;
+	JSONArray list = (JSONArray) object;	
 	JTabbedPane tabs = new JTabbedPane();
 	JFrame frame = new JFrame("crm");
 	frame.setSize(750, 600);
 	JPanel panel = new JPanel(); 
 	JPanel customers = new JPanel();
-	panel.setPreferredSize(new Dimension(650,500));
 	frame.add(tabs);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setVisible(true);
 	frame.add(panel, BorderLayout.CENTER);
 	panel.setLayout(null);
-	panel.setPreferredSize(frame.getSize());
 	tabs.add("1", panel);
 	tabs.addTab("2", customers);
-	
 	frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-	String data[][] = {{"andr","honchar","bogdanov","19bubl99","093249","0921371","31318"},
-
-	};
-	String columns[] = {"name", "surname","fathername", "mail", "phone", "visit date", "birthdate"};
-    JTable customerList = new JTable(data, columns);
-    //customerList.setBounds(10, 10, 700, 500);
-    //customerList.setSize(600, 600);
     
+    DefaultTableModel model = new DefaultTableModel(); 
+	// Create a couple of columns 
+	model.addColumn("name"); 
+	model.addColumn("surname"); 
+	model.addColumn("fathername");
+	model.addColumn("phone");
+	model.addColumn("e-mail");
+	model.addColumn("date of birth");
+	model.addColumn("date of visit");
+	// Append a row 
+	JTable customerList = new JTable(model);  
     JScrollPane sp = new JScrollPane(customerList); 
     sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
     
-    
-	
-	
+    for(int i = 0; i < list.size(); i++)
+	{
+		JSONObject obj = (JSONObject) list.get(i);
+		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
+	}
 	
 	name = new JTextField("Input your name");
 	name.setToolTipText("Input your name");
@@ -91,13 +81,13 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	name.addKeyListener(new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
-		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
+		public void keyPressed(KeyEvent e){
 			if (e.getKeyCode() == e.VK_TAB){
 				surname.requestFocus();
 			}
 		}
 	});
+	
 	surname = new JTextField("Input your surname");
 	surname.setBounds(20,60, 200,30);
 	surname.setToolTipText("Input your surname");
@@ -115,12 +105,12 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				fathername.requestFocus();
 			}
 		}
 	});
+
 	fathername = new JTextField("Input your fathername");
 	fathername.setBounds(20,100, 200,30);
 	fathername.setToolTipText("Input your fathername");
@@ -138,7 +128,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				phone.requestFocus();
 			}
@@ -162,7 +151,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				dateofvisit.requestFocus();
 			}
@@ -186,7 +174,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				close.requestFocus();
 			}
@@ -210,7 +197,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				mail.requestFocus();
 			}
@@ -248,7 +234,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
-			// TODO Auto-generated method stub
 			if (e.getKeyCode() == e.VK_TAB){
 				name.requestFocus();
 			}
@@ -276,14 +261,12 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		      phone.setText("");
 		      mail.setText("");
 		      list.add(obj);
-		      System.out.println(list);
 		      try (FileWriter file = new FileWriter("d:\\test.json")) {
 		              file.write(list.toString());
 		              file.flush();
 		          } catch (IOException e1) {
 		              e1.printStackTrace();
 		          }
-		    
 			try (FileWriter file = new FileWriter("d:\\test.json")) {
 	            file.write(list.toString());
 	            file.flush();
@@ -309,12 +292,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			}
 		}
 	});
-	
-	
 	frame.setPreferredSize(new Dimension(750, 601));
-    frame.pack();
-    
-    
+    frame.pack();   
 }
-
 }
