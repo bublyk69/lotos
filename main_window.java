@@ -59,21 +59,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	
 	frame.setLocationRelativeTo(null);
     frame.setVisible(true);
-	String data[][] = {{"andr","honchar","bogdanov","19bubl99","093249","0921371","31318"},
-
-	};
-	String columns[] = {"name", "surname","fathername", "mail", "phone", "visit date", "birthdate"};
-    JTable customerList = new JTable(data, columns);
-    //customerList.setBounds(10, 10, 700, 500);
-    //customerList.setSize(600, 600);
-    
-    JScrollPane sp = new JScrollPane(customerList); 
-    sp.setPreferredSize(new Dimension(600,500));
-    customers.add(sp);
-    
-    
-	
-	
 	
 	name = new JTextField("Input your name");
 	name.setToolTipText("Input your name");
@@ -310,7 +295,14 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	
+	String data[][] = {{"andr","honchar","bogdanov","19bubl99","093249","0921371","31318"}
+
+	};
+	String columns[] = {"name", "surname","fathername", "mail", "phone", "visit date", "birthdate"};
+    JTable customerList = new JTable(data, columns);    
+    JScrollPane sp = new JScrollPane(customerList); 
+    sp.setPreferredSize(new Dimension(600,500));
+    customers.add(sp);
 	frame.setPreferredSize(new Dimension(750, 601));
     frame.pack();
     
@@ -318,5 +310,3 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 }
 
 }
-
-
