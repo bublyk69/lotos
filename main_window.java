@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DateFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -295,11 +296,19 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	String data[][] = {{"andr","honchar","bogdanov","19bubl99","093249","0921371","31318"}
-
-	};
-	String columns[] = {"name", "surname","fathername", "mail", "phone", "visit date", "birthdate"};
-    JTable customerList = new JTable(data, columns);    
+	DefaultTableModel model = new DefaultTableModel(); 
+	// Create a couple of columns 
+	model.addColumn("name"); 
+	model.addColumn("surname"); 
+	model.addColumn("fathername");
+	model.addColumn("phone");
+	model.addColumn("e-mail");
+	model.addColumn("date of birth");
+	model.addColumn("date of visit");
+	// Append a row 
+	model.addRow(new Object[]{"ander", "honch", "bogdanov", "09323456", "123456khn", "56789", "5678"});
+	model.addRow(new Object[]{"ander", "honch", "bogdanov", "09323456", "123456khn", "56789", "5678"});
+	JTable customerList = new JTable(model);    
     JScrollPane sp = new JScrollPane(customerList); 
     sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
