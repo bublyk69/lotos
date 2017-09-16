@@ -253,6 +253,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		      obj.put("date2", dateofvisit.getText());
 		      obj.put("phone", phone.getText());
 		      obj.put("mail", mail.getText());
+		      model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
 		      name.setText("");
 		      surname.setText("");
 		      fathername.setText("");
