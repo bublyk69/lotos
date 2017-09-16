@@ -20,6 +20,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class main_window extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static JTextField name,surname,fathername,dateofbirth,dateofvisit,phone,mail;
 	static JButton ok,close,viewlist;
 	
@@ -27,18 +31,18 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	// making frame
 	JSONParser parser = new JSONParser();
 	Object object = parser.parse(new FileReader("d:\\test.json"));
-	JSONArray list = (JSONArray) object;
+	JSONArray list = (JSONArray) object;	
 	JTabbedPane tabs = new JTabbedPane();
 	JFrame frame = new JFrame("crm");
 	frame.setSize(750, 600);
-	JPanel mainPanel = new JPanel(); 
+	JPanel panel = new JPanel(); 
 	JPanel customers = new JPanel();
 	frame.add(tabs);
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setVisible(true);
-	frame.add(mainPanel, BorderLayout.CENTER);
-	mainPanel.setLayout(null);
-	tabs.add("1", mainPanel);
+	frame.add(panel, BorderLayout.CENTER);
+	panel.setLayout(null);
+	tabs.add("1", panel);
 	tabs.addTab("2", customers);
 	frame.setLocationRelativeTo(null);
     frame.setVisible(true);
@@ -53,32 +57,33 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	model.addColumn("date of birth");
 	model.addColumn("date of visit");
 	// Append a row 
-	JTable customerList = new JTable(model); 
+	JTable customerList = new JTable(model);  
     JScrollPane sp = new JScrollPane(customerList); 
     sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
     JButton delBtn = new JButton("delete");
-	customers.add(delBtn);
-	delBtn.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			int selRow = customerList.getSelectedRow();
+    customers.add(delBtn);
+    delBtn.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent e) {
+            int selRow = customerList.getSelectedRow();
             if(selRow != -1) {
                 model.removeRow(selRow);
-                
+               list.remove(selRow);
+               
             }
-		}
-	});
-	for(int i = 0; i < list.size(); i++)
-    {
-        JSONObject obj = (JSONObject) list.get(i);
-        model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
-    }
-	
+        }
+    });
+    
+    for(int i = 0; i < list.size(); i++)
+	{
+		JSONObject obj = (JSONObject) list.get(i);
+		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
+	}
 	
 	name = new JTextField("Input your name");
 	name.setToolTipText("Input your name");
 	name.setBounds(20, 20, 200, 30);
-	mainPanel.add(name);
+	panel.add(name);
 	name.setFocusTraversalKeysEnabled(false);
 	name.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -101,7 +106,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	surname = new JTextField("Input your surname");
 	surname.setBounds(20,60, 200,30);
 	surname.setToolTipText("Input your surname");
-	mainPanel.add(surname);
+	panel.add(surname);
 	surname.setFocusTraversalKeysEnabled(false);
 	surname.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -124,7 +129,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	fathername = new JTextField("Input your fathername");
 	fathername.setBounds(20,100, 200,30);
 	fathername.setToolTipText("Input your fathername");
-	mainPanel.add(fathername);
+	panel.add(fathername);
 	fathername.setFocusTraversalKeysEnabled(false);
 	fathername.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -147,7 +152,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	dateofbirth = new JTextField("Input your date of birth");
 	dateofbirth.setBounds(350,20, 130,30);
 	dateofbirth.setToolTipText("Input date of your birth");
-	mainPanel.add(dateofbirth);
+	panel.add(dateofbirth);
 	dateofbirth.setFocusTraversalKeysEnabled(false);
 	dateofbirth.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -170,7 +175,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	dateofvisit = new JTextField("Input your date of visit");
 	dateofvisit.setBounds(350,60, 130,30);
 	dateofvisit.setToolTipText("Input date of your visit");
-	mainPanel.add(dateofvisit);
+	panel.add(dateofvisit);
 	dateofvisit.setFocusTraversalKeysEnabled(false);
 	dateofvisit.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -193,7 +198,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	phone = new JTextField("Input your phone number");
 	phone.setBounds(20,220, 200,30);
 	phone.setToolTipText("Input your phone number");
-	mainPanel.add(phone);
+	panel.add(phone);
 	phone.setFocusTraversalKeysEnabled(false);
 	phone.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -216,7 +221,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	mail = new JTextField("Input your e-mail");
 	mail.setBounds(20,260, 200,30);
 	mail.setToolTipText("Input your e-mail");
-	mainPanel.add(mail);
+	panel.add(mail);
 	mail.setFocusTraversalKeysEnabled(false);
 	mail.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
@@ -238,7 +243,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	
 	ok = new JButton("OK");
 	ok.setBounds(0, 450, 650, 50);
-	mainPanel.add(ok);
+	panel.add(ok);
 	ok.setFocusTraversalKeysEnabled(false);
 	ok.addKeyListener(new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
@@ -263,6 +268,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		      obj.put("date2", dateofvisit.getText());
 		      obj.put("phone", phone.getText());
 		      obj.put("mail", mail.getText());
+		      model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
 		      name.setText("");
 		      surname.setText("");
 		      fathername.setText("");
@@ -271,7 +277,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		      phone.setText("");
 		      mail.setText("");
 		      list.add(obj);
-		      System.out.println(list);
 		      try (FileWriter file = new FileWriter("d:\\test.json")) {
 		              file.write(list.toString());
 		              file.flush();
@@ -291,7 +296,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	close.setSize(100, 50);
 	close.setLocation(400, 250);
 	close.addActionListener(e -> System.exit(0));
-	mainPanel.add(close);
+	panel.add(close);
 	close.setFocusTraversalKeysEnabled(false);
 	close.addKeyListener(new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
@@ -303,8 +308,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			}
 		}
 	});
-		
-	
 	frame.setPreferredSize(new Dimension(750, 601));
     frame.pack();   
 }
