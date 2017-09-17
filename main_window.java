@@ -69,7 +69,12 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
             if(selRow != -1) {
                 model.removeRow(selRow);
                list.remove(selRow);
-               
+               try (FileWriter file = new FileWriter("d:\\test.json")) {
+   	            file.write(list.toString());
+   	            file.flush();
+   	        	} catch (IOException e1) {
+   	        		e1.printStackTrace();
+   	        	}
             }
         }
     });
@@ -283,12 +288,6 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		          } catch (IOException e1) {
 		              e1.printStackTrace();
 		          }
-			try (FileWriter file = new FileWriter("d:\\test.json")) {
-	            file.write(list.toString());
-	            file.flush();
-	        } catch (IOException e1) {
-	            e1.printStackTrace();
-	        }
 		}
 	});
 	
