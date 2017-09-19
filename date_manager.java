@@ -1,9 +1,22 @@
 import java.util.Calendar;
 import java.util.Date;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
-public class date_manager {
+public class date_manager extends mail_manager{
 	
 	 static Date date = new Date();
+	 
+	public static void checker(String name , String father , String birth , String mail) {
+		
+		if (birth_check(birth)) {
+			
+			name = name + " " + father;
+			mail_birthday(mail ,name);
+			
+		}
+		
+	} 
 	
 	public static boolean birth_check(String s) {
 		
