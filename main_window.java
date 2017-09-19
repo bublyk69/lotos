@@ -19,7 +19,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class main_window extends JFrame{
+public class main_window extends date_manager{
 	/**
 	 * 
 	 */
@@ -78,12 +78,16 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
             }
         }
     });
-    
-    for(int i = 0; i < list.size(); i++)
-	{
-		JSONObject obj = (JSONObject) list.get(i);
-		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
-	}
+    if (!(list.isEmpty())) {
+    	
+    	for(int i = 0; i < list.size(); i++)
+    	{
+    		JSONObject obj = (JSONObject) list.get(i);
+    		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
+    		checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+    	}
+    	
+    }
 	
 	name = new JTextField("Input your name");
 	name.setToolTipText("Input your name");
@@ -267,27 +271,27 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void mouseClicked(MouseEvent e) {
 		    JSONObject obj = new JSONObject();
 		    obj.put("name", name.getText());
-		      obj.put("surname", surname.getText());
-		      obj.put("date1", dateofbirth.getText());
-		      obj.put("fathername", fathername.getText());
-		      obj.put("date2", dateofvisit.getText());
-		      obj.put("phone", phone.getText());
-		      obj.put("mail", mail.getText());
-		      model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
-		      name.setText("");
-		      surname.setText("");
-		      fathername.setText("");
-		      dateofvisit.setText("");
-		      dateofbirth.setText("");
-		      phone.setText("");
-		      mail.setText("");
-		      list.add(obj);
-		      try (FileWriter file = new FileWriter("d:\\test.json")) {
-		              file.write(list.toString());
-		              file.flush();
-		          } catch (IOException e1) {
-		              e1.printStackTrace();
-		          }
+		    obj.put("surname", surname.getText());
+		    obj.put("date1", dateofbirth.getText());
+		    obj.put("fathername", fathername.getText());
+		    obj.put("date2", dateofvisit.getText());
+		    obj.put("phone", phone.getText());
+		    obj.put("mail", mail.getText());
+		    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
+		    name.setText("");
+		    surname.setText("");
+		    fathername.setText("");
+		    dateofvisit.setText("");
+		    dateofbirth.setText("");
+		    phone.setText("");
+		    mail.setText("");
+		    list.add(obj);
+		    try (FileWriter file = new FileWriter("d:\\test.json")) {
+		    	file.write(list.toString());
+		    	file.flush();
+		    } catch (IOException e1) {
+		    	e1.printStackTrace();
+		    }
 		}
 	});
 	
