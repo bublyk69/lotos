@@ -10,10 +10,11 @@ public class mail_managment {
 
 
 
-   public static void mail() {    
+   public static void mail_birthday(String to, String name ) {    
       // Recipient's email ID needs to be mentioned.
 	  String from = "19bublyk99@gmail.com";
-      String to = "lemvlad99@gmail.com";
+	  String fromPass = "andriy69";
+      String text = "Шановний" + name + ", стоматологічна клініка 'Лотос' вітає Вас з днем народження.";
       
       //Get the session object
       Properties props = new Properties();
@@ -26,7 +27,7 @@ public class mail_managment {
       Session session = Session.getDefaultInstance(props, 
         new javax.mail.Authenticator() {
      protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication("19bublyk99@gmail.com", "andriy69");
+        return new PasswordAuthentication(from, fromPass);
         //change according to your information
      }
       });
@@ -36,8 +37,8 @@ public class mail_managment {
        message.setFrom(new InternetAddress(from));
        //change accordingly
        message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-          message.setSubject("Ти хуїла");
-          message.setText("кєкосбля");
+          message.setSubject("Вітання з Днем Народження");
+          message.setText(text);
           
           //send message
           Transport.send(message);
