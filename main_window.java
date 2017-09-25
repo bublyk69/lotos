@@ -84,9 +84,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     	{
     		JSONObject obj = (JSONObject) list.get(i);
     		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
-    		checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
     	}
-    	
     }
 	
 	name = new JTextField("Input your name");
@@ -312,6 +310,11 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	frame.setPreferredSize(new Dimension(750, 601));
-    frame.pack();   
+    frame.pack();  
+    for(int i = 0; i < list.size(); i++)
+	{
+		JSONObject obj = (JSONObject) list.get(i);
+		checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+	}
 }
 }
