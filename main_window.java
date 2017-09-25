@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -58,11 +61,13 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	model.addColumn("date of visit");
 	// Append a row 
 	JTable customerList = new JTable(model);  
+	final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    customerList.setRowSorter(sorter);
     JScrollPane sp = new JScrollPane(customerList); 
     sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
     JButton delBtn = new JButton("delete");
-    customers.add(delBtn);
+    customers.add(delBtn, BorderLayout.NORTH);
     delBtn.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             int selRow = customerList.getSelectedRow();
@@ -78,6 +83,33 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
             }
         }
     });
+    
+    JButton findBtn = new JButton("find");
+    customers.add(findBtn);
+    JTextField filterText = new JTextField("A");
+    filterText.setPreferredSize(new Dimension(100, 20));
+    
+    customers.add(filterText, BorderLayout.CENTER);
+    findBtn.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String text = filterText.getText();
+	        if (text.length() == 0) {
+	          sorter.setRowFilter(null);
+	        } else {
+	          sorter.setRowFilter(RowFilter.regexFilter(text));
+	        }
+		}
+	});
+    
+    JButton clear = new JButton("clear");
+    customers.add(clear);
+    clear.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e){
+    		sorter.setRowFilter(RowFilter.regexFilter(""));
+    		filterText.setText("");
+		}
+	});
+    
     if (!(list.isEmpty())) {
     	
     	for(int i = 0; i < list.size(); i++)
