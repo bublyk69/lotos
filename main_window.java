@@ -14,12 +14,15 @@ import java.io.IOException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class main_window extends JFrame{
+public class main_window extends date_manager{
 	/**
 	 * 
 	 */
@@ -58,27 +61,63 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	model.addColumn("date of visit");
 	// Append a row 
 	JTable customerList = new JTable(model);  
+	final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+    customerList.setRowSorter(sorter);
     JScrollPane sp = new JScrollPane(customerList); 
     sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
     JButton delBtn = new JButton("delete");
-    customers.add(delBtn);
+    customers.add(delBtn, BorderLayout.NORTH);
     delBtn.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             int selRow = customerList.getSelectedRow();
             if(selRow != -1) {
                 model.removeRow(selRow);
                list.remove(selRow);
-               
+               try (FileWriter file = new FileWriter("d:\\test.json")) {
+   	            file.write(list.toString());
+   	            file.flush();
+   	        	} catch (IOException e1) {
+   	        		e1.printStackTrace();
+   	        	}
             }
         }
     });
     
-    for(int i = 0; i < list.size(); i++)
-	{
-		JSONObject obj = (JSONObject) list.get(i);
-		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
-	}
+    JButton findBtn = new JButton("find");
+    customers.add(findBtn);
+    JTextField filterText = new JTextField("A");
+    filterText.setPreferredSize(new Dimension(100, 20));
+    filterText.add
+    customers.add(filterText, BorderLayout.CENTER);
+    findBtn.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			String text = filterText.getText();
+	        if (text.length() == 0) {
+	          sorter.setRowFilter(null);
+	        } else {
+	          sorter.setRowFilter(RowFilter.regexFilter(text));
+	        }
+		}
+	});
+    
+    JButton clear = new JButton("clear");
+    customers.add(clear);
+    clear.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e){
+    		sorter.setRowFilter(RowFilter.regexFilter(""));
+    		filterText.setText("");
+		}
+	});
+    
+    if (!(list.isEmpty())) {
+    	
+    	for(int i = 0; i < list.size(); i++)
+    	{
+    		JSONObject obj = (JSONObject) list.get(i);
+    		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
+    	}
+    }
 	
 	name = new JTextField("Input your name");
 	name.setToolTipText("Input your name");
@@ -262,33 +301,27 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void mouseClicked(MouseEvent e) {
 		    JSONObject obj = new JSONObject();
 		    obj.put("name", name.getText());
-		      obj.put("surname", surname.getText());
-		      obj.put("date1", dateofbirth.getText());
-		      obj.put("fathername", fathername.getText());
-		      obj.put("date2", dateofvisit.getText());
-		      obj.put("phone", phone.getText());
-		      obj.put("mail", mail.getText());
-		      model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
-		      name.setText("");
-		      surname.setText("");
-		      fathername.setText("");
-		      dateofvisit.setText("");
-		      dateofbirth.setText("");
-		      phone.setText("");
-		      mail.setText("");
-		      list.add(obj);
-		      try (FileWriter file = new FileWriter("d:\\test.json")) {
-		              file.write(list.toString());
-		              file.flush();
-		          } catch (IOException e1) {
-		              e1.printStackTrace();
-		          }
-			try (FileWriter file = new FileWriter("d:\\test.json")) {
-	            file.write(list.toString());
-	            file.flush();
-	        } catch (IOException e1) {
-	            e1.printStackTrace();
-	        }
+		    obj.put("surname", surname.getText());
+		    obj.put("date1", dateofbirth.getText());
+		    obj.put("fathername", fathername.getText());
+		    obj.put("date2", dateofvisit.getText());
+		    obj.put("phone", phone.getText());
+		    obj.put("mail", mail.getText());
+		    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
+		    name.setText("");
+		    surname.setText("");
+		    fathername.setText("");
+		    dateofvisit.setText("");
+		    dateofbirth.setText("");
+		    phone.setText("");
+		    mail.setText("");
+		    list.add(obj);
+		    try (FileWriter file = new FileWriter("d:\\test.json")) {
+		    	file.write(list.toString());
+		    	file.flush();
+		    } catch (IOException e1) {
+		    	e1.printStackTrace();
+		    }
 		}
 	});
 	
@@ -309,6 +342,11 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	frame.setPreferredSize(new Dimension(750, 601));
-    frame.pack();   
+    frame.pack();  
+    for(int i = 0; i < list.size(); i++)
+	{
+		JSONObject obj = (JSONObject) list.get(i);
+		checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+	}
 }
 }
