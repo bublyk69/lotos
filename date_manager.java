@@ -16,11 +16,28 @@ public class date_manager extends mail_manager{
 			
 		}
 		
+		if (birth_check(birth)) {
+			
+			name = name + " " + father;
+			mail_remind(mail ,name);
+			
+		}
+		
 	} 
 	
 	public static boolean birth_check(String s) {
 		
 		if ((day(s) == current_day()) && (month(s) == current_month())) {
+			return true;
+		}else {
+			return false;
+		}
+		
+	}
+	
+	public static boolean visit_check(String s) {
+		
+		if ((day(s) == current_day()) && ((month(s)+6)%12 == current_month())) {
 			return true;
 		}else {
 			return false;
