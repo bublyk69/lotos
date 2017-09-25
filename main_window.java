@@ -88,7 +88,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     customers.add(findBtn);
     JTextField filterText = new JTextField("A");
     filterText.setPreferredSize(new Dimension(100, 20));
-    filterText.add
+    
     customers.add(filterText, BorderLayout.CENTER);
     findBtn.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
