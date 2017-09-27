@@ -7,7 +7,7 @@ public class date_manager extends mail_manager{
 	
 	 static Date date = new Date();
 	 
-	public static void checker(String name , String father , String birth , String mail) {
+	public static void checker(String name , String father , String birth , String visit, String mail) {
 		
 		if (birth_check(birth)) {
 			
@@ -16,7 +16,7 @@ public class date_manager extends mail_manager{
 			
 		}
 		
-		if (birth_check(birth)) {
+		if (visit_check(visit)) {
 			
 			name = name + " " + father;
 			mail_remind(mail ,name);
@@ -37,7 +37,7 @@ public class date_manager extends mail_manager{
 	
 	public static boolean visit_check(String s) {
 		
-		if ((day(s) == current_day()) && ((month(s)+6)%12 == current_month())) {
+		if ((month(s)+6)%12 == current_month()) {
 			return true;
 		}else {
 			return false;
