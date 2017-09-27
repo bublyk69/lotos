@@ -53,23 +53,23 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     
     DefaultTableModel model = new DefaultTableModel(); 
 	// Create a couple of columns 
-	model.addColumn("name"); 
-	model.addColumn("surname"); 
-	model.addColumn("fathername");
-	model.addColumn("phone");
+	model.addColumn("Ім'я"); 
+	model.addColumn("Прізвище"); 
+	model.addColumn("По-батькові");
+	model.addColumn("Моб.тел");
 	model.addColumn("e-mail");
-	model.addColumn("date of birth");
-	model.addColumn("date of visit");
+	model.addColumn("Дата народження");
+	model.addColumn("Дата візиту");
 	// Append a row 
 	JTable customerList = new JTable(model);  
 	final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     customerList.setRowSorter(sorter);
     JScrollPane sp = new JScrollPane(customerList); 
     customers.add(sp);
-    sp.setBounds(10, 50, 720, 500);
-    JButton delBtn = new JButton("delete");
+    sp.setBounds(5, 50, 720, 500);
+    JButton delBtn = new JButton("Видалити");
     customers.add(delBtn);
-    delBtn.setBounds(500,0,100,50);
+    delBtn.setBounds(628,10,100,30);
     delBtn.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             int selRow = customerList.getSelectedRow();
@@ -86,12 +86,12 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
         }
     });
     
-    JButton findBtn = new JButton("find");
+    JButton findBtn = new JButton("Знайти");
     customers.add(findBtn);
-    findBtn.setBounds(10, 0, 110, 50);
+    findBtn.setBounds(215, 10, 110, 30);
     
     JTextField filterText = new JTextField("");
-    filterText.setBounds(121, 0, 100, 50);
+    filterText.setBounds(326, 12, 100, 26);
     customers.add(filterText, BorderLayout.CENTER);
     findBtn.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -105,9 +105,9 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
     
-    JButton clear = new JButton("clear");
+    JButton clear = new JButton("Очистити");
     customers.add(clear);
-    clear.setBounds(221, 0, 110, 50);
+    clear.setBounds(426, 10, 110, 30);
     clear.addActionListener(new ActionListener() {
     	public void actionPerformed(ActionEvent e){
     		sorter.setRowFilter(RowFilter.regexFilter(""));
@@ -126,7 +126,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	
 	name = new JTextField("Введіть ім'я пацієнта");
 	name.setToolTipText("Введіть ім'я пацієнта");
-	name.setBounds(20, 20, 200, 30);
+	name.setBounds(70, 60, 200, 30);
 	panel.add(name);
 	name.setFocusTraversalKeysEnabled(false);
 	name.addFocusListener(new FocusListener() {
@@ -148,7 +148,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	
 	surname = new JTextField("Введіть прізвище пацієнта");
-	surname.setBounds(20,60, 200,30);
+	surname.setBounds(70,100, 200,30);
 	surname.setToolTipText("Введіть прізвище пацієнта");
 	panel.add(surname);
 	surname.setFocusTraversalKeysEnabled(false);
@@ -171,7 +171,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 
 	fathername = new JTextField("Введіть по-батькові пацієнта");
-	fathername.setBounds(20,100, 200,30);
+	fathername.setBounds(70,140, 200,30);
 	fathername.setToolTipText("Input your fathername");
 	panel.add(fathername);
 	fathername.setFocusTraversalKeysEnabled(false);
@@ -194,7 +194,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 		
 	dateofbirth = new JTextField("Введіть дату народження пацієнта");
-	dateofbirth.setBounds(350,20, 130,30);
+	dateofbirth.setBounds(400,60, 200,30);
 	dateofbirth.setToolTipText("Введіть дату народження пацієнта");
 	panel.add(dateofbirth);
 	dateofbirth.setFocusTraversalKeysEnabled(false);
@@ -217,7 +217,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	
 	dateofvisit = new JTextField("Введіть дату останнього візиту");
-	dateofvisit.setBounds(350,60, 130,30);
+	dateofvisit.setBounds(400,100, 200,30);
 	dateofvisit.setToolTipText("Введіть дату останнього візиту");
 	panel.add(dateofvisit);
 	dateofvisit.setFocusTraversalKeysEnabled(false);
@@ -240,7 +240,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	
 	phone = new JTextField("Введіть номер телефону пацієнта");
-	phone.setBounds(20,220, 200,30);
+	phone.setBounds(70,260, 200,30);
 	phone.setToolTipText("Введіть номер телефону пацієнта");
 	panel.add(phone);
 	phone.setFocusTraversalKeysEnabled(false);
@@ -263,7 +263,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	
 	mail = new JTextField("Введіть e-mail пацієнта");
-	mail.setBounds(20,260, 200,30);
+	mail.setBounds(70,300, 200,30);
 	mail.setToolTipText("Введіть e-mail пацієнта");
 	panel.add(mail);
 	mail.setFocusTraversalKeysEnabled(false);
@@ -357,9 +357,8 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	close = new JButton("close");
-	close.setSize(100, 50);
-	close.setLocation(400, 250);
+	close = new JButton("Закрити");
+	close.setBounds(400, 280,200,50);
 	close.addActionListener(e -> System.exit(0));
 	panel.add(close);
 	close.setFocusTraversalKeysEnabled(false);
