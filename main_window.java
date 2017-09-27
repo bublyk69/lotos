@@ -8,9 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -304,14 +301,16 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			    obj.put("date2", dateofvisit.getText());
 			    obj.put("phone", phone.getText());
 			    obj.put("mail", mail.getText());
+			    for(int i = 0; i < list.size(); i++)
+				{
+					JSONObject newobj = (JSONObject) list.get(i);
+					if(name.getText().equals(newobj.get("name").toString()) && surname.getText().equals(newobj.get("surname").toString()) && fathername.getText().equals(newobj.get("fathername").toString())) {
+						list.remove(i);
+						model.removeRow(i);
+						break;
+					}
+				}
 			    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
-			    name.setText("Введіть ім'я пацієнта");
-			    surname.setText("Введіть прізвище пацієнта");
-			    fathername.setText("Введіть по-батькові пацієнта");
-			    dateofvisit.setText("Введіть дату останнього візиту");
-			    dateofbirth.setText("Введіть дату народження пацієнта");
-			    phone.setText("Введіть номер телефону пацієнта");
-			    mail.setText("Введіть e-mail пацієнта");
 			    list.add(obj);
 			    try (FileWriter file = new FileWriter("d:\\test.json")) {
 			    	file.write(list.toString());
@@ -319,6 +318,13 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			    } catch (IOException e1) {
 			    	e1.printStackTrace();
 			    }
+			    name.setText("Введіть ім'я пацієнта");
+			    surname.setText("Введіть прізвище пацієнта");
+			    fathername.setText("Введіть по-батькові пацієнта");
+			    dateofvisit.setText("Введіть дату останнього візиту");
+			    dateofbirth.setText("Введіть дату народження пацієнта");
+			    phone.setText("Введіть номер телефону пацієнта");
+			    mail.setText("Введіть e-mail пацієнта");
 			}
 			if (e.getKeyCode() == e.VK_TAB){
 				name.requestFocus();
@@ -331,7 +337,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		public void mouseExited(MouseEvent e) {}
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseClicked(MouseEvent e) {
-		    JSONObject obj = new JSONObject();
+			JSONObject obj = new JSONObject();
 		    obj.put("name", name.getText());
 		    obj.put("surname", surname.getText());
 		    obj.put("date1", dateofbirth.getText());
@@ -339,14 +345,16 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		    obj.put("date2", dateofvisit.getText());
 		    obj.put("phone", phone.getText());
 		    obj.put("mail", mail.getText());
+		    for(int i = 0; i < list.size(); i++)
+			{
+				JSONObject newobj = (JSONObject) list.get(i);
+				if(name.getText().equals(newobj.get("name").toString()) && surname.getText().equals(newobj.get("surname").toString()) && fathername.getText().equals(newobj.get("fathername").toString())) {
+					list.remove(i);
+					model.removeRow(i);
+					break;
+				}
+			}
 		    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
-		    name.setText("Введіть ім'я пацієнта");
-		    surname.setText("Введіть прізвище пацієнта");
-		    fathername.setText("Введіть по-батькові пацієнта");
-		    dateofvisit.setText("Введіть дату останнього візиту");
-		    dateofbirth.setText("Введіть дату народження пацієнта");
-		    phone.setText("Введіть номер телефону пацієнта");
-		    mail.setText("Введіть e-mail пацієнта");
 		    list.add(obj);
 		    try (FileWriter file = new FileWriter("d:\\test.json")) {
 		    	file.write(list.toString());
@@ -354,6 +362,13 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		    } catch (IOException e1) {
 		    	e1.printStackTrace();
 		    }
+		    name.setText("Введіть ім'я пацієнта");
+		    surname.setText("Введіть прізвище пацієнта");
+		    fathername.setText("Введіть по-батькові пацієнта");
+		    dateofvisit.setText("Введіть дату останнього візиту");
+		    dateofbirth.setText("Введіть дату народження пацієнта");
+		    phone.setText("Введіть номер телефону пацієнта");
+		    mail.setText("Введіть e-mail пацієнта");
 		}
 	});
 	
@@ -378,7 +393,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	{
 		JSONObject obj = (JSONObject) list.get(i);
 		if(obj.get("mail").toString()!="") {
-		      checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+		      checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("date2").toString() , obj.get("mail").toString());
 		    }
 	}
 }
