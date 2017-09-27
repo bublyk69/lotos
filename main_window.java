@@ -36,7 +36,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	Object object = parser.parse(new FileReader("d:\\test.json"));
 	JSONArray list = (JSONArray) object;	
 	JTabbedPane tabs = new JTabbedPane();
-	JFrame frame = new JFrame("crm");
+	JFrame frame = new JFrame("Облік пацієнтів 'Лотос'");
 	frame.setSize(750, 600);
 	JPanel panel = new JPanel(); 
 	JPanel customers = new JPanel();
@@ -44,11 +44,12 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	frame.setVisible(true);
 	frame.add(panel, BorderLayout.CENTER);
-	panel.setLayout(null);
-	tabs.add("1", panel);
-	tabs.addTab("2", customers);
+	tabs.add("Форма для вводу", panel);
+	tabs.addTab("Список пацієнтів", customers);
 	frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+    panel.setLayout(null);
+    customers.setLayout(null);
     
     DefaultTableModel model = new DefaultTableModel(); 
 	// Create a couple of columns 
@@ -64,10 +65,11 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
     customerList.setRowSorter(sorter);
     JScrollPane sp = new JScrollPane(customerList); 
-    sp.setPreferredSize(new Dimension(600,500));
     customers.add(sp);
+    sp.setBounds(10, 50, 720, 500);
     JButton delBtn = new JButton("delete");
-    customers.add(delBtn, BorderLayout.NORTH);
+    customers.add(delBtn);
+    delBtn.setBounds(500,0,100,50);
     delBtn.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             int selRow = customerList.getSelectedRow();
@@ -86,9 +88,10 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     
     JButton findBtn = new JButton("find");
     customers.add(findBtn);
-    JTextField filterText = new JTextField("A");
-    filterText.setPreferredSize(new Dimension(100, 20));
+    findBtn.setBounds(10, 0, 110, 50);
     
+    JTextField filterText = new JTextField("");
+    filterText.setBounds(121, 0, 100, 50);
     customers.add(filterText, BorderLayout.CENTER);
     findBtn.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
@@ -97,12 +100,14 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	          sorter.setRowFilter(null);
 	        } else {
 	          sorter.setRowFilter(RowFilter.regexFilter(text));
+	          
 	        }
 		}
 	});
     
     JButton clear = new JButton("clear");
     customers.add(clear);
+    clear.setBounds(221, 0, 110, 50);
     clear.addActionListener(new ActionListener() {
     	public void actionPerformed(ActionEvent e){
     		sorter.setRowFilter(RowFilter.regexFilter(""));
@@ -115,19 +120,19 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     	for(int i = 0; i < list.size(); i++)
     	{
     		JSONObject obj = (JSONObject) list.get(i);
-    		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("e-mail"), obj.get("date1"), obj.get("date2")});
+    		model.addRow(new Object[]{obj.get("name"), obj.get("surname"), obj.get("fathername"), obj.get("phone"), obj.get("mail"), obj.get("date1"), obj.get("date2")});
     	}
     }
 	
-	name = new JTextField("Input your name");
-	name.setToolTipText("Input your name");
+	name = new JTextField("Введіть ім'я пацієнта");
+	name.setToolTipText("Введіть ім'я пацієнта");
 	name.setBounds(20, 20, 200, 30);
 	panel.add(name);
 	name.setFocusTraversalKeysEnabled(false);
 	name.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(name.getText().equals("Input your name")){
+			if(name.getText().equals("Введіть ім'я пацієнта")){
 				name.setText("");
 			}
 		}
@@ -142,15 +147,15 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	surname = new JTextField("Input your surname");
+	surname = new JTextField("Введіть прізвище пацієнта");
 	surname.setBounds(20,60, 200,30);
-	surname.setToolTipText("Input your surname");
+	surname.setToolTipText("Введіть прізвище пацієнта");
 	panel.add(surname);
 	surname.setFocusTraversalKeysEnabled(false);
 	surname.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(surname.getText().equals("Input your surname")){
+			if(surname.getText().equals("Введіть прізвище пацієнта")){
 				surname.setText("");
 			}
 		}
@@ -165,7 +170,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 
-	fathername = new JTextField("Input your fathername");
+	fathername = new JTextField("Введіть по-батькові пацієнта");
 	fathername.setBounds(20,100, 200,30);
 	fathername.setToolTipText("Input your fathername");
 	panel.add(fathername);
@@ -173,7 +178,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	fathername.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(fathername.getText().equals("Input your fathername")){
+			if(fathername.getText().equals("Введіть по-батькові пацієнта")){
 				fathername.setText("");
 			}
 		}
@@ -188,15 +193,15 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 		
-	dateofbirth = new JTextField("Input your date of birth");
+	dateofbirth = new JTextField("Введіть дату народження пацієнта");
 	dateofbirth.setBounds(350,20, 130,30);
-	dateofbirth.setToolTipText("Input date of your birth");
+	dateofbirth.setToolTipText("Введіть дату народження пацієнта");
 	panel.add(dateofbirth);
 	dateofbirth.setFocusTraversalKeysEnabled(false);
 	dateofbirth.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(dateofbirth.getText().equals("Input your date of birth")){
+			if(dateofbirth.getText().equals("Введіть дату народження пацієнта")){
 				dateofbirth.setText("");
 			}
 		}
@@ -211,15 +216,15 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	dateofvisit = new JTextField("Input your date of visit");
+	dateofvisit = new JTextField("Введіть дату останнього візиту");
 	dateofvisit.setBounds(350,60, 130,30);
-	dateofvisit.setToolTipText("Input date of your visit");
+	dateofvisit.setToolTipText("Введіть дату останнього візиту");
 	panel.add(dateofvisit);
 	dateofvisit.setFocusTraversalKeysEnabled(false);
 	dateofvisit.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(dateofvisit.getText().equals("Input your date of visit")){
+			if(dateofvisit.getText().equals("Введіть дату останнього візиту")){
 				dateofvisit.setText("");
 			}
 		}
@@ -234,15 +239,15 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	phone = new JTextField("Input your phone number");
+	phone = new JTextField("Введіть номер телефону пацієнта");
 	phone.setBounds(20,220, 200,30);
-	phone.setToolTipText("Input your phone number");
+	phone.setToolTipText("Введіть номер телефону пацієнта");
 	panel.add(phone);
 	phone.setFocusTraversalKeysEnabled(false);
 	phone.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			 if(phone.getText().equals("Input your phone number")){
+			 if(phone.getText().equals("Введіть номер телефону пацієнта")){
 				 phone.setText("");
 			 }
 		}
@@ -257,15 +262,15 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		}
 	});
 	
-	mail = new JTextField("Input your e-mail");
+	mail = new JTextField("Введіть e-mail пацієнта");
 	mail.setBounds(20,260, 200,30);
-	mail.setToolTipText("Input your e-mail");
+	mail.setToolTipText("Введіть e-mail пацієнта");
 	panel.add(mail);
 	mail.setFocusTraversalKeysEnabled(false);
 	mail.addFocusListener(new FocusListener() {
 		public void focusLost(FocusEvent e) {}
 		public void focusGained(FocusEvent e) {
-			if(mail.getText().equals("Input your e-mail")){
+			if(mail.getText().equals("Введіть e-mail пацієнта")){
 				mail.setText("");
 			}
 		}
@@ -281,13 +286,40 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	
 	ok = new JButton("OK");
-	ok.setBounds(0, 450, 650, 50);
+	ok.setBounds(0, 450, 730, 50);
 	panel.add(ok);
+	ok.setLocation(0, 485);
+
 	ok.setFocusTraversalKeysEnabled(false);
 	ok.addKeyListener(new KeyListener() {
 		public void keyTyped(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {}
 		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == e.VK_ENTER){
+				JSONObject obj = new JSONObject();
+			    obj.put("name", name.getText());
+			    obj.put("surname", surname.getText());
+			    obj.put("date1", dateofbirth.getText());
+			    obj.put("fathername", fathername.getText());
+			    obj.put("date2", dateofvisit.getText());
+			    obj.put("phone", phone.getText());
+			    obj.put("mail", mail.getText());
+			    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
+			    name.setText("Введіть ім'я пацієнта");
+			    surname.setText("Введіть прізвище пацієнта");
+			    fathername.setText("Введіть по-батькові пацієнта");
+			    dateofvisit.setText("Введіть дату останнього візиту");
+			    dateofbirth.setText("Введіть дату народження пацієнта");
+			    phone.setText("Введіть номер телефону пацієнта");
+			    mail.setText("Введіть e-mail пацієнта");
+			    list.add(obj);
+			    try (FileWriter file = new FileWriter("d:\\test.json")) {
+			    	file.write(list.toString());
+			    	file.flush();
+			    } catch (IOException e1) {
+			    	e1.printStackTrace();
+			    }
+			}
 			if (e.getKeyCode() == e.VK_TAB){
 				name.requestFocus();
 			}
@@ -308,13 +340,13 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		    obj.put("phone", phone.getText());
 		    obj.put("mail", mail.getText());
 		    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
-		    name.setText("");
-		    surname.setText("");
-		    fathername.setText("");
-		    dateofvisit.setText("");
-		    dateofbirth.setText("");
-		    phone.setText("");
-		    mail.setText("");
+		    name.setText("Введіть ім'я пацієнта");
+		    surname.setText("Введіть прізвище пацієнта");
+		    fathername.setText("Введіть по-батькові пацієнта");
+		    dateofvisit.setText("Введіть дату останнього візиту");
+		    dateofbirth.setText("Введіть дату народження пацієнта");
+		    phone.setText("Введіть номер телефону пацієнта");
+		    mail.setText("Введіть e-mail пацієнта");
 		    list.add(obj);
 		    try (FileWriter file = new FileWriter("d:\\test.json")) {
 		    	file.write(list.toString());
@@ -346,7 +378,9 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     for(int i = 0; i < list.size(); i++)
 	{
 		JSONObject obj = (JSONObject) list.get(i);
-		checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+		if(obj.get("mail").toString()!="") {
+		      checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("mail").toString());
+		    }
 	}
 }
 }
