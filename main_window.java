@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -28,10 +30,11 @@ public class main_window extends date_manager{
 	static JButton ok,close,viewlist;
 	
 public  main_window() throws FileNotFoundException, IOException, ParseException{
-	// making frame
+	// Open JSON files
 	JSONParser parser = new JSONParser();
-	Object object = parser.parse(new FileReader("d:\\test.json"));
-	JSONArray list = (JSONArray) object;	
+	Object list_object = parser.parse(new FileReader("d:\\customers.json"));
+	JSONArray list = (JSONArray) list_object;
+	// Create frame
 	JTabbedPane tabs = new JTabbedPane();
 	JFrame frame = new JFrame("Облік пацієнтів 'Лотос'");
 	frame.setSize(750, 600);
@@ -64,25 +67,21 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     JScrollPane sp = new JScrollPane(customerList); 
     customers.add(sp);
     sp.setBounds(5, 50, 720, 500);
+    // Deleting
     JButton delBtn = new JButton("Видалити");
     customers.add(delBtn);
     delBtn.setBounds(628,10,100,30);
+    JSONObject pers = new JSONObject();
     delBtn.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
             int selRow = customerList.getSelectedRow();
             if(selRow != -1) {
-                model.removeRow(selRow);
+               model.removeRow(selRow);
                list.remove(selRow);
-               try (FileWriter file = new FileWriter("d:\\test.json")) {
-   	            file.write(list.toString());
-   	            file.flush();
-   	        	} catch (IOException e1) {
-   	        		e1.printStackTrace();
-   	        	}
             }
         }
     });
-    
+    // Finding
     JButton findBtn = new JButton("Знайти");
     customers.add(findBtn);
     findBtn.setBounds(215, 10, 110, 30);
@@ -111,7 +110,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     		filterText.setText("");
 		}
 	});
-    
+    // Filling a table
     if (!(list.isEmpty())) {
     	
     	for(int i = 0; i < list.size(); i++)
@@ -121,6 +120,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
     	}
     }
 	
+    // Creating fields for info about customers
 	name = new JTextField("Введіть ім'я пацієнта");
 	name.setToolTipText("Введіть ім'я пацієнта");
 	name.setBounds(70, 60, 200, 30);
@@ -281,7 +281,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			}
 		}
 	});
-	
+	// Logic after clicking OK
 	ok = new JButton("OK");
 	ok.setBounds(0, 450, 730, 50);
 	panel.add(ok);
@@ -312,12 +312,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 				}
 			    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
 			    list.add(obj);
-			    try (FileWriter file = new FileWriter("d:\\test.json")) {
-			    	file.write(list.toString());
-			    	file.flush();
-			    } catch (IOException e1) {
-			    	e1.printStackTrace();
-			    }
+			    
 			    name.setText("Введіть ім'я пацієнта");
 			    surname.setText("Введіть прізвище пацієнта");
 			    fathername.setText("Введіть по-батькові пацієнта");
@@ -356,12 +351,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 			}
 		    model.addRow(new Object[]{name.getText(), surname.getText(), fathername.getText(), phone.getText(), mail.getText(), dateofbirth.getText(), dateofvisit.getText()});
 		    list.add(obj);
-		    try (FileWriter file = new FileWriter("d:\\test.json")) {
-		    	file.write(list.toString());
-		    	file.flush();
-		    } catch (IOException e1) {
-		    	e1.printStackTrace();
-		    }
+		    //visit_list.put(name.getText()+surname.getText()+fathername.getText(), "f");
 		    name.setText("Введіть ім'я пацієнта");
 		    surname.setText("Введіть прізвище пацієнта");
 		    fathername.setText("Введіть по-батькові пацієнта");
@@ -371,7 +361,7 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 		    mail.setText("Введіть e-mail пацієнта");
 		}
 	});
-	
+	// Close button
 	close = new JButton("Закрити");
 	close.setBounds(400, 280,200,50);
 	close.addActionListener(e -> System.exit(0));
@@ -389,12 +379,50 @@ public  main_window() throws FileNotFoundException, IOException, ParseException{
 	});
 	frame.setPreferredSize(new Dimension(750, 601));
     frame.pack();  
+    // Check birthdays and visiting
     for(int i = 0; i < list.size(); i++)
 	{
 		JSONObject obj = (JSONObject) list.get(i);
 		if(obj.get("mail").toString()!="") {
-		      checker(obj.get("name").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("date2").toString() , obj.get("mail").toString());
-		    }
+			visit_check(obj.get("name").toString() , obj.get("surname").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("date2").toString() , obj.get("mail").toString());
+		    birth_check(obj.get("name").toString() , obj.get("surname").toString() , obj.get("fathername").toString() , obj.get("date1").toString() , obj.get("date2").toString() , obj.get("mail").toString());
+		}
 	}
+    // When app closing save data
+    frame.addWindowListener(new WindowListener() {
+        public void windowClosing(WindowEvent event) {
+        	try (FileWriter file = new FileWriter("d:\\customers.json")) {
+   	            file.write(list.toString());
+   	            file.flush();
+   	        } catch (IOException e1) {
+   	        		e1.printStackTrace();
+   	        	}
+            System.exit(0);
+        }
+        
+		public void windowActivated(WindowEvent e) {
+			
+		}
+
+		public void windowClosed(WindowEvent e) {
+			
+		}
+
+		public void windowDeactivated(WindowEvent e) {
+						
+		}
+
+		public void windowDeiconified(WindowEvent e) {
+						
+		}
+
+		public void windowIconified(WindowEvent e) {
+						
+		}
+
+		public void windowOpened(WindowEvent e) {
+						
+		}
+    });
 }
 }
