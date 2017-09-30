@@ -5,44 +5,22 @@ import org.json.simple.JSONObject;
 
 public class date_manager extends mail_manager{
 	
-	 static Date date = new Date();
-	 
-	public static void checker(String name , String father , String birth , String visit, String mail) {
+	 static Date date = new Date(); 
+	
+	public static void birth_check(String name , String surname , String father , String birth , String visit, String mail) {
 		
-		if (birth_check(birth)) {
-			
+		if ((day(birth) == current_day()) && (month(birth) == current_month())) {
 			name = name + " " + father;
 			mail_birthday(mail ,name);
-			
 		}
-		
-		if (visit_check(visit)) {
-			
-			name = name + " " + father;
-			mail_remind(mail ,name);
-			
-		}
-		
-	} 
-	
-	public static boolean birth_check(String s) {
-		
-		if ((day(s) == current_day()) && (month(s) == current_month())) {
-			return true;
-		}else {
-			return false;
-		}
-		
 	}
 	
-	public static boolean visit_check(String s) {
+	public static void visit_check(String name , String surname , String father , String birth , String visit, String mail) {
 		
-		if ((month(s)+6)%12 == current_month()) {
-			return true;
-		}else {
-			return false;
+		if ((month(visit)+6)%12 == current_month() && day(visit)==current_day()) {
+			name = name + " " + father;
+			mail_remind(mail ,name);
 		}
-		
 	}
 	
 	public static int current_day() {
